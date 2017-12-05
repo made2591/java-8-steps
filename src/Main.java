@@ -2,8 +2,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
-public class Main {
+public class Main implements Matteo {
 
     private static final Main main = new Main();
     private int var = 1;
@@ -96,8 +97,6 @@ public class Main {
 
         stepperEnd();
 
-        stepperStart();
-
         integers.forEach(
                 new Consumer<Integer>() {
 
@@ -131,6 +130,40 @@ public class Main {
 
         stepperEnd();
 
+        Function<String, Integer> mapper1 = x -> new Integer(x);
+        System.out.println(mapper1.apply("11"));
+
+        Function<String, Integer> mapper2 = Integer::new;
+        System.out.println(mapper2.apply("12"));
+
+        stepperEnd();
+
+        Consumer<Integer> consumer1 = x -> System.out.println(x);
+        consumer1.accept(13);
+
+        Consumer<Integer> consumer2 = System.out::println;
+        consumer1.accept(14);
+
+        stepperEnd();
+
+        Function<String, String> mapper3 = x -> x.toUpperCase();
+        System.out.println(mapper3.apply("abc"));
+
+        Function<String, String> mapper4 = String::toUpperCase;
+        System.out.println(mapper4.apply("def"));
+
+        stepperEnd();
+
+    }
+
+    private static void step6() {
+
+        stepperStart();
+
+        new Main().printMatteo();
+
+        stepperEnd();
+
     }
 
     public static void main(String[] args) {
@@ -139,7 +172,17 @@ public class Main {
         step2();
         step3();
         main.step4();
+        step5();
+        step6();
 
+    }
+
+}
+
+interface Matteo {
+
+    default void printMatteo() {
+        System.out.print("Matteo\n");
     }
 
 }
