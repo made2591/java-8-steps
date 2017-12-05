@@ -166,14 +166,29 @@ public class Main implements Matteo {
 
     }
 
+    private static void step7() {
+
+        stepperStart();
+
+        int sumOdd = integers.stream()
+                .filter(o -> o % 2 == 1)
+                .mapToInt(o -> o)
+                .sum();
+        System.out.print(sumOdd+"\n");
+
+        stepperEnd();
+
+    }
+
     public static void main(String[] args) {
 
-        step1();
-        step2();
-        step3();
-        main.step4();
-        step5();
-        step6();
+//        step1();
+//        step2();
+//        step3();
+//        main.step4();
+//        step5();
+//        step6();
+        step7();
 
     }
 

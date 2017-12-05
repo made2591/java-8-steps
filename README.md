@@ -1,4 +1,4 @@
-# java-8-steps
+# Java 8 - An overview
 
 This repo contains just some examples and a few notes about what is in the video [Java 8 Lambda Expressions & Streams](https://www.youtube.com/watch?v=8pDm_kH4YKY) so, first of all, many thanks go to NewCircle Instructor Adib Saikali for his lesson. Enjoy!
 
@@ -34,7 +34,7 @@ Lambda expressions are a _concept_, that has its own implementation flavor in di
 
 The compiler transform the lambda expression in a static function and then call the generated function. Should be static method, which class they belong, and so on...it doesn't matter for now. Instead, we are interest in the type of the lambda. Initially they thought about a specific new function type. We try to cover the question: what is the type of a lambda function? To do that, we need first to talk about functional interface.
 
-##### Functional interface
+### Functional interface
 
 The functional interfaces are interface with only one method in them. They are the most common and used in Java. For instance, the Runnable, Comparable, Callable interface are a functional interface. They are so popular in lot of library, such as in Spring library: it contains TransactionCallback, RowMapper, StatementCallback, and others.
 So they officially decided to call this kind of interface functional interface to formalize them inside the language. ```@FunctionalInterface``` is an optional annotation to make compiler able to produce error if more than one method is added to a functional interface. Any interface with one method is considered a functional interface by Java 8 even if was complied it with a Java 1.0 compiler: the new lambda function will work with old libraries without need to recompile.
@@ -130,6 +130,77 @@ Furthermore, if you a default method C in an interface A, an interface B that ex
 
 #### Creating a conflict
 Interface A and B provide default methods with same signature. C implements A, B: compile errors - duplicate default methods implementations. How to solve the conflict? Of course with overriding. Further, you can call the implementation in the interface with notation ```A.super.doSomething()```. A default method should not be final because it doesn't make so much sense. Same level => compiler error, override mandatory.
+
+	__Functional interface__ must have only one non-default method.
+
+### Collections Enhancements
+
+Java 8 uses lambda expressions and default methods to improve the exising java collections frameworks and add a lot of functions to them.
+
+At this point we already seen example of these methods, such as the forEach - an example of internal iteration: it delegates the looping to a library function (such as forEach, as we said), and the loop body processing to a lambda expression. Further, it allows the library function we are delegating to implement the logic needed to execute the iteration on muliple cores, if desired.
+
+Some of the new methods provided by the standard library are:
+
+- New java.lang.Iterable methods:
+	- default void forEach(Consumer<? super T> action);
+	- default Spliterator<T> spliterator();
+- New java.util.Collection methods:
+	- default boolean removeIf(Predicate<? super E> filter);
+	- default Spliterator<E> spliterator();
+	- default Stream<E> stream();
+	- default Stream<E> parallelStream();
+- New java.util.Map methods:
+	- default V getOrDefault(Object key, V defaultValue);
+	- putIfAbsent(K key, V value);
+	- etc;
+
+The streams related methods mentioned above are:
+- default Spliterator<T> spliterator();
+- default Stream<E> stream();
+- default Stream<E> parallelStream();
+
+But what is a stream?
+
+### Stream
+
+Streams are a functional programming desing pattern for processing sequences of elements sequentially or in parallel. When examining java programs we always run into code along the following lines:
+- Run a database query to get a list of objects;
+- Iterate over the list to compute a single result;
+- Iterate over the list to generate a new data structure such as another list, map, set, etc;
+- Iterate over the list and etc;
+
+What we are saying is that stream are a concept (a design pattern) in the same way lambdas are: they can be implemented in many programming languages.
+
+###### Look at step 7
+
+The code in step7 Create a stream instance from a source java collection, add a filter operation to the stream intermediate operations pipeline, add a map operation to the stream intermediate operations pipeline and add a terminal operation (sum) that kicks off the stream processing.
+
+##### The stream composition
+
+A __stream__ has three elements:
+- a __source__ that the stream can pull objects from;
+- a __pipeline__ of operations that will execute on the elements of the stream;
+- a __terminal__ operation that pulls values down the stream;
+
+##### The stream lifecycle
+A __stream__ has the following life steps:
+- a __creation__ step: streams get created from a source object such as a collection, file, or generator;
+- a __configuration__ step: streams get configured with a collection of pipeline operations;
+- a __execution__ step: stream terminal operation is invoked which starts pulling objects trough the operations pipeline of the stream;
+- a __cleanup__ step: stream can only be used once;
+
+__Note__: stream execution is __lazy__, that means that until you call a terminal operation the stream doesn't do anythings. It doesn't loop.
+
+
+
+
+
+
+
+
+
+
+
 
 
 
