@@ -87,10 +87,49 @@ So until now we saw _how_ the functional interface provide a way to expose the l
 
 Basically a lambda is a way to define an anonymous function. The question now is: what about functions I already written? Do I have to rewrite them? The short answer is no, because method references can be used to pass an existing function in a place where a lambda is expected.
 
-###### Look at step 5
+###### Look at step 5.1
 
-In the ```consumerOldFunction``` 
+#### Reference a static method
+In the ```consumerOldFunction``` we are saying "ok use the ```myAlreadyWrittenFunction``` as the implementation of accept method of the functional interface consumer. Obviously, the signature of the referenced method __needs__ to match the signature of functional interface method (It will handle also overloading and generics). In this first scenario we referenced a static method, but there are four different types of method references.
 
+###### Look at step 5.2
+
+#### Reference a constructor
+You can also use method reference to reference constructor: this is handy when working with streams. With the notation 
+```Function<String, Integer> mapper2 = Integer::new;```
+we are asking the compiler to create for us a function that takes as angurment a string, returns an integer and in the body of that method invoque the new constructor of the Integer and pass the string parameter to that method.
+
+###### Look at step 5.3
+
+#### Reference to a specific object instance method
+With the notation 
+```Consumer<Integer> consumer2 = System.out::println;```
+we tell the compiler that the lambda body signature should match the method println and that the lambda expression should result in a call to System.out.println(x).
+
+###### Look at step 5.4
+
+#### Reference to a specific arbitrary object of a particular type
+With the notation 
+```Function<String, String> mapper2 = String::toUpperCase;```
+we tell the compiler to invoke the toUpperCase method on the parameter that is passed to the lambda. So invoking:
+```mapper2.apply("def")```
+will call the lambda expression derived method and inside that will call the toUpperCase method on the parameter "def"
+
+The all idea of the method reference is that if you already have the method ready you can create a lambda using method reference, and then use lambda wherever you want in your code. 
+
+### Default methods
+lambda (->), method ref, now default methods.
+A natural place to use lambdas is with the Java collections framework. The collection framework is defined with interfaces such as Iterable, Collection, Map, List, Set, ... etc. Adding a new method such forEach to the Iterable interface will mean that all existing implementations of Iterable will break. All codes already compiled will not work with the new version of java. This problem is known as the __the interface evolution problem__. How can published interfaces be evolved without breaking existing implementations?
+
+A default method on java interface has an implementation provided in the interface and is inherited by classes that implement the interface<T>  
+
+###### Look at step 6
+
+Can you override a default method? Yes of course, simply overriding a method. 
+Furthermore, if you a default method C in an interface A, an interface B that extend interface A and override the implementation provided by interface A of the default method C, if you have an implementation of interface B without any implementation of the default method C, the B implementation will be used: then, the closest implementation in hierarchy will be used.
+
+#### Creating a conflict
+Interface A and B provide default methods with same signature. C implements A, B: compile errors - duplicate default methods implementations. How to solve the conflict? Of course with overriding. Further, you can call the implementation in the interface with notation ```A.super.doSomething()```. A default method should not be final because it doesn't make so much sense. Same level => compiler error, override mandatory.
 
 
 
