@@ -191,12 +191,73 @@ A __stream__ has the following life steps:
 
 __Note__: stream execution is __lazy__, that means that until you call a terminal operation the stream doesn't do anythings. It doesn't loop.
 
+###### Look at step 8
 
+##### Number Stream Source 
+The first example shows a range from 0 to 5 starting from a LongSource from stream package in standard library. Remember Stream can be anything, what the stream does is splitting out elements.
 
+##### Collection Stream Source 
+A character stream source is called using chars() and then count().
 
+##### File System Streams
+```Files.list(Path object from Java 7)``` gives a stream to work directly on list.
+```Files.walk(Path object from Java 7)``` gives a stream to work directly on list with depth first search.
 
+###### Look at step 9
 
+The example print out it self. The find method returns a stream, so it is possible to call forEach method on it: the forEach terminal do something to each things that it founds. The things it found are pointed by path object, we then use another stream of Files, lines, that out each lines of the file as a stream.
 
+#### How about terminals?
+There are many types of terminals for stream:
+
+- Reduction terminal operations that return a single result (such as sum());
+- Mutable reduction terminal operations that return multiple results in a container data structure;
+- Search terminal operations that return a result as soon as a match is found;
+- Generic terminal operations that do any kind of processing you want on each stream element;
+
+But remember that nothing happens until the terminal operation is invoked (think about updating, and so on);
+
+###### Look at step 10
+
+##### Reduction terminal operations
+Get min, get max => Actually, I didn't understand the min.
+
+###### Look at step 11
+
+##### Mutable reduction operations
+Collectors are used to collect all the things that came out of a stream and collect them into a structure such as a List, a Set, etc. Actually, collectors class defines many useful collectors such as List, Set, Map, groupingBy, partitioningBy, ...etc
+
+###### Look at step 12
+
+##### Search terminal operation
+Note the findAny: result of findAny call is unpredictable. In a sense that if stream is executed, for instance, parallel, then the first call that ends will return the result so you don't know exactly a priori which will be the returned value. It just means find any.
+
+##### Generic terminal operation
+forEach is an example of.
+
+#### Streams pipeline rules
+- Streams can process elements sequentially;
+- Streams can process elements in parallel;
+- Thus means that streams operations are not allowed to modify the stream source otherwise bad things happens;
+
+##### Intermediate stream operations
+There are two classes of intermediate stream operations:
+
+- __Stateless intermediate operations__: they do not need to know the history of results from the previous steps in the pipeline or keep track of how many results it have produced or seen. Example of stateless intermediate operations are filter, map, flatMap, peek.
+
+- __Stateful intermediate operations__: they need to know the history of results from the previous steps in the pipeline or need to keep track of how many results it have produced or seen. Example of stateless intermediate operations are distinct, limit, skip, sorted.
+
+So, for instance you want a stream to sort elements you obviously needs to know the order of sorting. Instead, if you have a parallel operations with threads that compete with each others, you are not interested in state of each elements. Let's have a look at sample example
+
+###### Look at step 13
+
+###### Stateless intermediate operations
+No notes about that.
+
+###### Look at step 14
+
+###### Stateful intermediate operations
+No notes about that.
 
 
 

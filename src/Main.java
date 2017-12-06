@@ -1,8 +1,14 @@
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 
 public class Main implements Matteo {
 
@@ -180,7 +186,175 @@ public class Main implements Matteo {
 
     }
 
-    public static void main(String[] args) {
+    private static void step8() throws IOException {
+
+        stepperStart();
+
+        System.out.print("Long Stream Source\n");
+
+        LongStream.range(0, 5).forEach(System.out::println);
+
+        stepperEnd();
+
+        List<String> cities = Arrays.asList("toronto",
+            "ottawa", "montreal", "vancouver");
+        cities.stream().forEach(System.out::println);
+
+        stepperEnd();
+
+        long length = "ABC".chars().count();
+        Consumer<Long> printer = System.out::println;
+        printer.accept(length);
+
+        stepperEnd();
+
+        String workDir = System.getProperty("user.dir");
+        Path workDirPath = FileSystems.getDefault().getPath(workDir);
+
+        System.out.println("Directory Listing Stream");
+        Files.list(workDirPath).forEach(System.out::println);
+
+        stepperEnd();
+
+        System.out.println("Depth First Directory Walking Stream");
+        Files.walk(workDirPath).forEach(System.out::println);
+
+        stepperEnd();
+
+    }
+
+    private static void step9() throws IOException {
+
+        stepperStart();
+
+        String workDir = System.getProperty("user.dir");
+        Path workDirPath = FileSystems.getDefault().getPath(workDir);
+
+        String className = Main.class.getName().replace(".", "/") + ".java";
+
+        Files.find(workDirPath, 10, (fileName, attributes) -> fileName.endsWith(className)).forEach(path -> {
+            try {
+                Files.lines(path).forEach(System.out::println);
+            } catch (Exception e) {}
+        });
+
+        stepperEnd();
+
+    }
+
+    private static void step10() throws IOException {
+
+        stepperStart();
+
+        System.out.println(integers.stream().count());
+
+        stepperEnd();
+
+        Optional<Integer> result;
+        result = integers.stream().min((x, y) -> x - y);
+        System.out.println(result.get());
+
+        stepperEnd();
+
+        result = integers.stream().max(Comparator.comparingInt(x -> x));
+        System.out.println(result.get());
+
+        stepperEnd();
+
+        Integer res = integers.stream().reduce(0, (x, y) -> x + y);
+        System.out.println(res);
+
+    }
+
+    private static void step11() throws IOException {
+
+        stepperStart();
+
+        Set<Integer> result = integers.stream().collect(Collectors.toSet());
+        System.out.println(result);
+
+        stepperEnd();
+
+        Integer[] a = integers.stream().toArray(Integer[]::new);
+        Arrays.stream(a).forEach(System.out::println);
+
+        stepperEnd();
+
+        Integer res = integers.stream().reduce(0, (x, y) -> x + y);
+        System.out.println(res);
+
+    }
+
+    private static void step12() throws IOException {
+
+        stepperStart();
+
+        Optional<Integer> result = integers.stream().findFirst();
+        System.out.println(result);
+
+        stepperEnd();
+
+        Boolean res = integers.stream().anyMatch(x -> x == 5);
+        System.out.println(res);
+
+        stepperEnd();
+
+        res = integers.stream().anyMatch(x -> x > 3);
+        System.out.println(res);
+
+        stepperEnd();
+
+        Optional<Integer> anyres = integers.stream().findAny();
+        System.out.println(anyres.get());
+
+        stepperEnd();
+
+    }
+
+    private static void step13() throws IOException {
+
+        stepperStart();
+
+        integers.stream().filter(x -> x < 4).forEach(System.out::println);
+
+        stepperEnd();
+
+        integers = integers.stream().map(x -> x + x).collect(Collectors.toList());
+        integers.forEach(System.out::println);
+
+        stepperEnd();
+
+        IntSummaryStatistics intSummaryStatistics = integers.stream().mapToInt(x -> x).summaryStatistics();
+        System.out.println(intSummaryStatistics);
+
+        stepperEnd();
+
+    }
+
+    private static void step14() throws IOException {
+
+        stepperStart();
+
+        integers = Arrays.asList(1,1,2,4,5,2,3,2,5,1);
+        integers.stream().distinct().forEach(System.out::println);
+
+        stepperEnd();
+
+        integers.stream().limit(3).forEach(System.out::println);
+
+        stepperEnd();
+
+        integers.stream().skip(3).forEach(System.out::println);
+
+        stepperEnd();
+
+        integers.stream().sorted().forEach(System.out::println);
+
+        stepperEnd();
+
+    }
+
+    public static void main(String[] args) throws IOException {
 
 //        step1();
 //        step2();
@@ -188,8 +362,14 @@ public class Main implements Matteo {
 //        main.step4();
 //        step5();
 //        step6();
-        step7();
-
+//        step7();
+//        step8();
+//        step9();
+//        step10();
+//        step11();
+//        step12();
+//        step13();
+        step14();
     }
 
 }
